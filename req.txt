@@ -18,24 +18,27 @@ Remove budget: The database should never lose a budget. Removed of budget is a f
 Reconcile budget: At any time, the user should be able to run a reconciliation process where the amount on AOP is compared with the totals on active budgets and ensure that the budget for the AOP comply
 Reduce budget: If the user wants to reduce the amount in a budget, it cannot be reduce below the amounts of active actuals
 
-User experience: The user interface layer will be a chat interface versus a traditional forms based display. The user should be able to provide commands to the chatbot per the following:
-Add user: This conversation should support adding a user. All mandatory fields should be prompted for if not provided by the user. For example, the user should be able to say add user lsamuel (ldap) and the chatbot should prompt to user to provide first name, last name, email, level and cost center code. If the user provides the command as add user with ldap lsamuel, first name Samuel, last name Larkins, then the chatbot prompt for email, level and cost center code. If there is an add user for a previously removed user, just mark the ldap active 
-Remove user: No removes should be done in the database. Removed users should be marked inactive. An active user with an active budget within an active AOP cannot be removed. All other users can be removed
-Similar rules apply for all transactions
-Charting: User should be able to ask for bar chart of budgets (paretto top 10 etc) for an AOP
-Non budget queries: If the user ask queries not related to budget, automatically process the same based on standard LLM app. For example, what is the weather in San Francisco.
+Budget management features: Here are all the capabilities that I would the user to be able to do:
+Copy budget: User should be able to specify a budget identifier and the target AOP to copy a budget to. When copying the budget, a new budget identifier should be generated in the destination AOP. If the destination AOP is an active AOP, it is important to ensure that the total budgets within AOP cannot exceed the amount on AOP
+Remove budget: The database should never lose a budget. Removed of budget is a flag in database
+Reconcile budget: At any time, the user should be able to run a reconciliation process where the amount on AOP is compared with the totals on active budgets and ensure that the budget for the AOP comply meaning the total amount on the active AOP does not exceed the sum of the amounts in the active budgets for that AOP
+Reduce budget: If the user wants to reduce the amount in a budget, it cannot be reduce below the amounts of active actuals
 
-Website: The UX will be a website UX. Should be accessible from open internet.
+The user experience layer will be based on forms. I will have the following screens:
+Users: We should be able to add a new users, remove a user and modify a users. Ldap is the key and should be non-modifiable.
+Organization: We should be able to add a manager-subordinate relationship
+Cost Centers: Need a form to add, remove cost centers. Removal of a cost center is managed by marking delete flag. No removal is permitted if there is an active budget record for that cost center
+AOP: Ability to create a new AOP, reset status for AOP
+Budgets: These as same as AOP detail. User should able to add a budget line item to an AOP. They should also be able to remove or modify AOP and the rules defined above should apply. Finally, there should be the ability to execute to each of the budget management feature referred above using this form
+Purchase requests and Purchase orders: There should be a CRUD form for each of these transactions
+We should enable the user to also execute the above in a conversational form should they type the command in the command bar on top of the page per the following comments in the next section.
+
 
 Authentication: There is no active sign-on for this application. If the user enters “IKnowYou241202”, the system should know that they are a valid user and allow for subsequent operations. If the user does not enter this code, then the error should be displayed to state the they are not an authenticated user.
 
 Reporting: The user should be able to report data fairly easily per the following:
-Show me my organization: Show the organization hierarchy for the user. Note that if a person A reports to B and B reports to C, when the user C says show me my organization, the report should show the hierarchy of A to B and B to C. If C has D and E reporting to them, that should also be shown
+Show organization: Show the organization hierarchy for the user. Note that if a person A reports to B and B reports to C, when the user C says show me my organization, the report should show the hierarchy of A to B and B to C. If C has D and E reporting to them, that should also be shown
 Show me my budget: Show the budgets totals for the user. This should only include the total budgets across C, D and E per the above example. If D and E have additional reports, then those should be automatically included as well
 
-The application will be a 3 tier application on GCP. The total number of users is only 10. We expect to manage about 1000 budget lines in total. The cost across all GCP services should not exceed $50. The code repository should be github. Please include setup instructions for github, GCP and provide CI/CD instruction for object creation. The business logic can be in python or Java. Provide code base, deployment instructions, functional test cases for this.
-
-
-
-
+The application will be a 3 tier application on GCP. The total number of users is only 10. We expect to manage about 1000 budget lines in total. The code repository should be github. Please include setup instructions for github, GCP and provide CI/CD instruction for object creation. The business logic can be in python or Java. Provide code base, deployment instructions, functional test cases for this.
 
